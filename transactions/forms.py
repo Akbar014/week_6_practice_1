@@ -1,5 +1,6 @@
 from django import forms
 from .models import Transaction
+from core.models import BankInfo
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
@@ -24,6 +25,7 @@ class DepositForm(TransactionForm):
     def clean_amount(self): # amount field ke filter korbo
         min_deposit_amount = 100
         amount = self.cleaned_data.get('amount') # user er fill up kora form theke amra amount field er value ke niye aslam, 50
+        
         if amount < min_deposit_amount:
             raise forms.ValidationError(
                 f'You need to deposit at least {min_deposit_amount} $'
@@ -40,6 +42,13 @@ class WithdrawForm(TransactionForm):
         max_withdraw_amount = 20000
         balance = account.balance # 1000
         amount = self.cleaned_data.get('amount')
+        bankinfo = BankInfo.objects.first()
+        if bankinfo.is_bankrupt == True :
+            raise forms.ValidationError(
+                f'Sorry, Bank is Bankrupted'
+            )
+
+            # return amount
         if amount < min_withdraw_amount:
             raise forms.ValidationError(
                 f'You can withdraw at least {min_withdraw_amount} $'

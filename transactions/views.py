@@ -17,6 +17,7 @@ from transactions.forms import (
 )
 from transactions.models import Transaction
 from accounts.models import UserBankAccount
+from core.models import BankInfo
 
 class TransactionCreateMixin(LoginRequiredMixin, CreateView):
     template_name = 'transactions/transaction_form.html'
@@ -79,7 +80,7 @@ class WithdrawMoneyView(TransactionCreateMixin):
 
     def form_valid(self, form):
         amount = form.cleaned_data.get('amount')
-
+        
         self.request.user.account.balance -= form.cleaned_data.get('amount')
         # balance = 300
         # amount = 5000
