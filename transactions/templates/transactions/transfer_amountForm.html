@@ -17,7 +17,6 @@
         <form method="POST">
             {% csrf_token %}
             {{form}}
-            {{form.balance}}
             <div class="flex w-full justify-center">
                 <button class="bg-blue-900 text-white hover:text-blue-900 hover:bg-white border border-blue-900 font-bold px-4 py-2 rounded-lg" type="submit">
                     Submit

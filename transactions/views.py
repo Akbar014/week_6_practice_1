@@ -127,9 +127,9 @@ def TransferAmountView(request):
             user = request.user
             sender = get_object_or_404(UserBankAccount, user=user)
             if sender.balance >= amount:
-                sender.balance -= amount
-                sender.save()
                 if reciever:
+                    sender.balance -= amount
+                    sender.save()
                     reciever.balance += amount
                     reciever.save()
                     messages.success(request, 'Transaction successful.')
@@ -139,7 +139,7 @@ def TransferAmountView(request):
             else:
                 messages.error(request, 'You dont have enough money.')
                 
-            return render(request, 'transactions/transfer_amountForm.html', {'form': sender, 'title': title})
+            return render(request, 'transactions/transfer_amountForm.html', {'form': form, 'title': title})
                
     else:
         form = TransferAmountForm()
